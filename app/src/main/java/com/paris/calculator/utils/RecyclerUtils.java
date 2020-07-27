@@ -20,7 +20,7 @@ public class RecyclerUtils {
         Display display = windowManager.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int gridColumns = size.x / 200;
+        int gridColumns = size.x / 250;
         if (gridColumns < 2) {
             gridColumns = 2;
         }
