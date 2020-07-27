@@ -1,0 +1,339 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="calculatorViewModel"
+            type="com.paris.calculator.viewmodels.CalculatorViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/whiteDark">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/keyboard"
+            android:layout_gravity="bottom"
+            android:fillViewport="true"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/result"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="10dp"
+                android:fillViewport="true"
+                android:scrollbars="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="30dp"
+                    android:text="@{calculatorViewModel.screenPrevious}"
+                    android:textColor="@color/grayDark2"
+                    android:textSize="20sp" />
+
+            </androidx.core.widget.NestedScrollView>
+
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="start"
+                android:text="@{calculatorViewModel.screenResult}"
+                android:textColor="@color/black"
+                android:textSize="38sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="5">
+
+                <Button
+                    android:id="@+id/operation_c"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_operations_states"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{(view) -> calculatorViewModel.onOperationClicked(view)}"
+                    android:text="@string/C"
+                    android:textColor="@color/red"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number7"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '7')}"
+                    android:text="@string/MD7"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number4"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '4')}"
+                    android:text="@string/MC4"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '1')}"
+                    android:text="@string/MC1"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/comma"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '.')}"
+                    android:text="@string/MC."
+                    android:textColor="#000000"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="5">
+
+                <Button
+                    android:id="@+id/operation_ce"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_operations_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onOperationClicked(view)}"
+                    android:text="@string/CE"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number8"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '8')}"
+                    android:text="@string/MD8"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number5"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '5')}"
+                    android:text="@string/MC5"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '2')}"
+                    android:text="@string/MC2"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number0"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '0')}"
+                    android:text="@string/MC0"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/operation_percent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_operations_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onOperationClicked(view)}"
+                    android:text="@string/mod"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number9"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '9')}"
+                    android:text="@string/MD9"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number6"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '6')}"
+                    android:text="@string/MC6"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/number3"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onNumberClicked(view, '3')}"
+                    android:text="@string/MC3"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/operation_equals"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_number_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onOperationClicked(view)}"
+                    android:text="@string/MCequal"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/operation_divide"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_operations_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onOperationClicked(view)}"
+                    android:text="@string/divide"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/operation_multiply"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_operations_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onOperationClicked(view)}"
+                    android:text="@string/MCX"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/operation_subtract"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_operations_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onOperationClicked(view)}"
+                    android:text="@string/MCsub"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:id="@+id/operation_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2.1"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/button_operations_states"
+                    android:onClick="@{(view) -> calculatorViewModel.onOperationClicked(view)}"
+                    android:text="@string/MCplus"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

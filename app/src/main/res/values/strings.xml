@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="tab_text_1"> Calculator</string>
+    <string name="tab_text_2">Currency converter</string>
+    <string name="divide_by_zero">You cannot divide by zero !</string>
+    <string name="no_internet_connection">There is no internet connection !</string>
+    <string name="generic_error">Sorry, something went wrong.</string>
+    <string name="get_rates">Get Rates</string>
+
+    <string name="C">C</string>
+    <string name="CE">CE</string>
+    <string name="mod">%</string>
+    <string name="divide">÷</string>
+    <string name="MD7">7</string>
+    <string name="MD8">8</string>
+    <string name="MD9">9</string>
+    <string name="MCX">×</string>
+    <string name="MC4">4</string>
+    <string name="MC5">5</string>
+    <string name="MC6">6</string>
+    <string name="MCsub">−</string>
+    <string name="MC1">1</string>
+    <string name="MC2">2</string>
+    <string name="MC3">3</string>
+    <string name="MCplus">+</string>
+    <string name="MC.">.</string>
+    <string name="MC0">0</string>
+    <string name="MCequal">=</string>
+    <string name="slash">+/−</string>
+</resources>
