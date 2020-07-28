@@ -39,6 +39,7 @@ public class CalculatorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         calculatorViewModel = new ViewModelProvider(this).get(CalculatorViewModel.class);
+        calculatorViewModel.getScreenResult().observe(this, this::sendResultToConverter);
     }
 
 
@@ -59,8 +60,14 @@ public class CalculatorFragment extends Fragment {
     }
 
 
-    private void scrollDown(String s) {
-        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+    /**
+     * Since androidx.fragment:fragment:1.3.0-alpha04 we can use FragmentManager
+     * to send data directly to another Fragment.
+     */
+    private void sendResultToConverter(String resultNumber) {
+        Bundle result = new Bundle();
+        result.putString("resultNumber", resultNumber);
+        getParentFragmentManager().setFragmentResult("key", result);
     }
 
 }

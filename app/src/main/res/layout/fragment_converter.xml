@@ -34,14 +34,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingStart="20dp"
-                    android:paddingTop="30dp"
+                    android:paddingTop="10dp"
                     android:paddingEnd="20dp"
-                    android:paddingBottom="30dp">
+                    android:paddingBottom="20dp">
+
+                    <Button
+                        android:id="@+id/get_rates"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:enabled="@{converterViewModel.progressState.equals(converterViewModel.GETTING_RATES) ? false : true}"
+                        android:onClick="@{() -> converterViewModel.onGetRatesClicked()}"
+                        android:text="@string/get_rates" />
 
                     <RelativeLayout
                         android:id="@+id/top_line"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/get_rates">
 
                         <Button
                             android:id="@+id/first_currency"
@@ -72,43 +84,27 @@
 
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:id="@+id/middle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/top_line">
-
-                        <ImageButton
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="?android:attr/selectableItemBackgroundBorderless"
-                            android:clickable="true"
-                            android:enabled="@{converterViewModel.ratesMap.size() == 0 ? false : true}"
-                            android:focusable="true"
-                            android:onClick="@{() -> converterViewModel.onReverseCLicked()}"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/synchronize_48" />
-
-                        <Button
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:enabled="@{converterViewModel.progressState.equals(converterViewModel.GETTING_RATES) ? false : true}"
-                            android:onClick="@{() -> converterViewModel.onGetRatesClicked()}"
-                            android:text="@string/get_rates" />
-
-                    </RelativeLayout>
+                    <ImageButton
+                        android:id="@+id/reverse"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@+id/top_line"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:enabled="@{converterViewModel.ratesMap.size() == 0 ? false : true}"
+                        android:focusable="true"
+                        android:onClick="@{() -> converterViewModel.onReverseCLicked()}"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/synchronize_48" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/middle">
+                        android:layout_below="@id/reverse">
 
                         <Button
                             android:id="@+id/second_currency"
@@ -165,12 +161,12 @@
                     <androidx.appcompat.widget.SearchView
                         android:id="@+id/search_view"
                         android:layout_width="match_parent"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginEnd="40dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true" />
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginBottom="5dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"

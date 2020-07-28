@@ -12,7 +12,11 @@ import com.paris.calculator.retrofit.RatesCall;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 public class ConverterViewModel extends AndroidViewModel implements RatesCall.GetRatesListener {
 
@@ -58,7 +62,8 @@ public class ConverterViewModel extends AndroidViewModel implements RatesCall.Ge
         String sCurrency = secondCurrency.getValue();
         if (input != null && !input.equals("") && fCurrency != null
                 && sCurrency != null && ratesMap.getValue() != null) {                              //If all required values exist
-            BigDecimal inputBigDecimal = BigDecimal.valueOf(Double.parseDouble(input));
+            input = input.replace(",", "");                                         //Remove all commas
+            BigDecimal inputBigDecimal = new BigDecimal(input);
             ratesMap.getValue().get(fCurrency);
             if (ratesMap.getValue().get(fCurrency) != null && ratesMap.getValue().get(sCurrency) != null) {
                 BigDecimal firstCurrencyRate = BigDecimal.valueOf(ratesMap.getValue().get(fCurrency));
@@ -69,7 +74,8 @@ public class ConverterViewModel extends AndroidViewModel implements RatesCall.Ge
                         .setScale(5, RoundingMode.DOWN);                                    //Multiply with input number to get result
                 result = result.compareTo(BigDecimal.ZERO) == 0 ?
                         BigDecimal.ZERO : result.stripTrailingZeros();                              //Remove trailing zeros
-                resultValue.setValue(result.toPlainString());                                       //Show as simple number with E(x) power
+                resultValue.setValue(formatWithCommas(result));
+
             }
         } else {
             resultValue.setValue(String.valueOf(0));
@@ -120,8 +126,17 @@ public class ConverterViewModel extends AndroidViewModel implements RatesCall.Ge
 
 
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        inputValue.setValue(String.valueOf(s));
-        calculateRate();
+        if (s.length() > 0) {
+            String input = String.valueOf(s).replace(",", "");                   //Remove all commas
+            String formattedInput = formatWithCommas(new BigDecimal(input));
+            if (s.charAt(s.length() - 1) == '.') {
+                formattedInput += '.';
+            }
+            inputValue.setValue(formattedInput);
+            calculateRate();
+        } else {
+            resultValue.setValue(String.valueOf(0));
+        }
     }
 
 
@@ -134,6 +149,26 @@ public class ConverterViewModel extends AndroidViewModel implements RatesCall.Ge
         selectingFirstCurrency.setValue(false);
         selectingSecondCurrency.setValue(false);
         calculateRate();
+    }
+
+
+    /**
+     * Use DecimalFormat to add comma separators between thousands, millions etc.
+     */
+    private String formatWithCommas(BigDecimal number) {
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+        symbols.setGroupingSeparator(',');
+        formatter.setDecimalFormatSymbols(symbols);
+        formatter.setMaximumFractionDigits(5);
+        formatter.setMaximumIntegerDigits(100);
+        String inputString = number.toPlainString();
+        if (inputString.contains(".")) {                                                            //DecimalFormat hides decimal points if the amount to zero
+            return formatter.format(new BigDecimal(inputString.substring(0, inputString.indexOf("."))))
+                    + inputString.substring(inputString.indexOf("."));                              //so we handle the decimal part separately
+        } else {
+            return formatter.format(number);
+        }
     }
 
 
@@ -157,8 +192,8 @@ public class ConverterViewModel extends AndroidViewModel implements RatesCall.Ge
         return inputValue;
     }
 
-    public void setInputValue(MutableLiveData<String> inputValue) {
-        this.inputValue = inputValue;
+    public void setInputValue(String inputValue) {
+        this.inputValue.setValue(inputValue);
     }
 
     public MutableLiveData<String> getResultValue() {

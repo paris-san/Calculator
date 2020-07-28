@@ -12,6 +12,10 @@ import com.paris.calculator.R;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class CalculatorViewModel extends AndroidViewModel {
 
@@ -79,7 +83,7 @@ public class CalculatorViewModel extends AndroidViewModel {
         } else {
             currentNumberInput = currentNumberInput + number;
         }
-        screenResult.setValue(currentNumberInput);
+        screenResult.setValue(formatWithCommas(currentNumberInput));
     }
 
 
@@ -98,7 +102,7 @@ public class CalculatorViewModel extends AndroidViewModel {
             } else if (currentNumberInput.length() > 0) {
                 if (currentOperation.equals("=")) {                                                 //If last operation is "="
                     stringPrevious = currentNumberInput + " " + operation + " ";
-                    lastResult = BigDecimal.valueOf(Double.parseDouble(currentNumberInput));        //Save the current input as starting sum
+                    lastResult = new BigDecimal(currentNumberInput);                                //Save the current input as starting sum
                 } else {                                                                            //If last operation is "+ - * ÷"
                     stringPrevious = stringPrevious + currentNumberInput + " " + operation + " ";
                     calculateResult();
@@ -117,7 +121,7 @@ public class CalculatorViewModel extends AndroidViewModel {
      */
     private void formatAndShowResult() {
         if (Math.abs(lastResult.scale()) < 10) {                                                    //If scale is > 10 or < -10
-            screenResult.setValue(lastResult.toPlainString());                                      //Show whole number
+            screenResult.setValue(formatWithCommas(lastResult.toPlainString()));                    //Show whole number
         } else {
             screenResult.setValue(String.valueOf(lastResult));                                      //Else use E(x) format
         }
@@ -172,7 +176,26 @@ public class CalculatorViewModel extends AndroidViewModel {
             } else {
                 currentNumberInput = String.valueOf(percent);                                       //Else use E(x) format
             }
-            screenResult.setValue(currentNumberInput);
+            screenResult.setValue(formatWithCommas(currentNumberInput));
+        }
+    }
+
+
+    /**
+     * Use DecimalFormat to add comma separators between thousands, millions etc.
+     */
+    private String formatWithCommas(String number) {
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.getDefault());
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+        symbols.setGroupingSeparator(',');
+        formatter.setDecimalFormatSymbols(symbols);
+        formatter.setMaximumFractionDigits(50);
+        formatter.setMaximumIntegerDigits(100);
+        if (number.contains(".")) {                                                                 //DecimalFormat hides decimal points if the amount to zero
+            return formatter.format(new BigDecimal(number.substring(0, number.indexOf("."))))
+                    + number.substring(number.indexOf("."));                                        //so we handle the decimal part separately
+        } else {
+            return formatter.format(new BigDecimal(number));
         }
     }
 

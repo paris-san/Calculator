@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public class ConverterFragment extends Fragment implements CurrencyRecyclerAdapt
     private CurrencyRecyclerAdapter currencyRecyclerAdapter;
     private RecyclerView currencyRecycler;
     private SearchView searchView;
+    private EditText inputEditText;
 
 
     public static ConverterFragment newInstance() {
@@ -51,6 +53,9 @@ public class ConverterFragment extends Fragment implements CurrencyRecyclerAdapt
         converterViewModel = new ViewModelProvider(this).get(ConverterViewModel.class);
         converterViewModel.getRatesMap().observe(this, this::setupCurrencyRecycler);
         converterViewModel.getErrorMessage().observe(this, this::showError);
+        converterViewModel.getInputValue().observe(this, this::editTextChanged);
+        createFragmentResultListener();
+
     }
 
 
@@ -66,6 +71,7 @@ public class ConverterFragment extends Fragment implements CurrencyRecyclerAdapt
         View rootView = fragmentConverterBinding.getRoot();
         currencyRecycler = rootView.findViewById(R.id.recycler_view);
         searchView = rootView.findViewById(R.id.search_view);
+        inputEditText = rootView.findViewById(R.id.input_value);
         setupSearchListener();
         return rootView;
     }
@@ -75,6 +81,15 @@ public class ConverterFragment extends Fragment implements CurrencyRecyclerAdapt
         if (((MainActivity) mContext).getVisibleFragment() == MainActivity.CONVERTER_FRAGMENT) {     //Show error only when the Converter is visible
             Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
         }
+    }
+
+
+    /**
+     * Due to formatting the input number with commas, the cursor moved to the start.
+     * We added this to set the cursor at the end and not disrupt the input process by the user.
+     */
+    private void editTextChanged(String text) {
+        inputEditText.setSelection(inputEditText.getText().length());
     }
 
 
@@ -104,6 +119,23 @@ public class ConverterFragment extends Fragment implements CurrencyRecyclerAdapt
                 return true;
             }
         });
+    }
+
+    /**
+     * Since androidx.fragment:fragment:1.3.0-alpha04 we can use FragmentManager
+     * to send data directly to another Fragment.
+     */
+    private void createFragmentResultListener() {
+        getParentFragmentManager().setFragmentResultListener(
+                "key", this, (key, bundle) -> {
+                    String result = bundle.getString("resultNumber");
+                    if (result != null) {
+                        double resultDouble = Double.parseDouble(result.replace(",", ""));       //Remove all commas
+                        converterViewModel.setInputValue(resultDouble >= 0 ? result : "0");
+                    } else {
+                        converterViewModel.setInputValue("0");
+                    }
+                });
     }
 
 
